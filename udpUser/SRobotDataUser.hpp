@@ -110,11 +110,11 @@ namespace orobotix {
 //		m_robot_R_ = q.matrix();
     }
 
-    /** beaglebone ip address */
-    std::string beagleboneIP_;
+    /** drone ip address */
+    std::string droneIP_;
 
-    /** beaglebone port */
-    int beaglebonePort_;
+    /** drone port */
+    int dronePort_;
 
     /** thruster number */
     int thrusterN_;

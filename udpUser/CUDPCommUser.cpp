@@ -106,11 +106,15 @@ namespace orobotix {
 //	while(flag_run_)
 //	{
 //        if(flag_background_) {sleep(1); continue;}
+    //printf("receive data!\n");
 
     if (!receiveDataFromRobot()) {
       flag_connect_ = false;
+      printf("no data received!\n");
       return;
     }
+    //printf("update sensor info!\n");
+
     // update the sensor data
     updateRobotSensorInformation();
 
@@ -120,7 +124,6 @@ namespace orobotix {
     // print out the data
     printSensorData(&sensorData_);
 //	}
-    printf("UDP receive thread exiting.");
   }
 
 
@@ -140,6 +143,7 @@ namespace orobotix {
 /** get Data from the robot */
   bool CUDPCommUser::receiveDataFromRobot() {
     /* now receive sensor data from the robot */
+    //printf("receive sensor data from robot!\n"); //debug
     int recvlen = (int) recvfrom(fd_, (char *) &sensorData_, sizeof(tUdpSensorData), 0, (struct sockaddr *) &remAddr_,
                                  &slen_);
     if (recvlen != sizeof(tUdpSensorData)) {
@@ -156,8 +160,8 @@ namespace orobotix {
     try {
       slen_ = sizeof(remAddr_);
 
-      std::string beaglebone_ip = robot_data_->beagleboneIP_;
-      const char *server = beaglebone_ip.c_str();
+      std::string drone_ip = robot_data_->droneIP_;
+      const char *server = drone_ip.c_str();
 
       /** start windows socket */
 #if defined(WIN32) || defined(WIN64) || defined(_WIN64)
@@ -326,21 +330,21 @@ namespace orobotix {
 
 /** print out the sensor data */
   void CUDPCommUser::printSensorData(tUdpSensorData *data) {
-    std::cout << "\n\n";
-    std::cout << "\ndepth = " << data->depth_;
-    std::cout << "\nimu =";
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "depth = " << data->depth_ << std::endl;
+    std::cout << "imu =";
     for (int i = 0; i < 6; i++)
       std::cout << " " << data->imu_[i];
-
-    printf("rx %d thrusters", robot_data_->thrusterN_);
-    std::cout << "\nmeasured rpm =";
+    std::cout << std::endl;
+    printf("rx %d thrusters\n", robot_data_->thrusterN_);
+    std::cout << "measured rpm =";
     for (int i = 0; i < robot_data_->thrusterN_; i++)
       std::cout << " " << data->m_rpm_[i];
-
-    std::cout << "\ncommand rpm =";
+    std::cout << std::endl;
+    std::cout << "command rpm =";
     for (int i = 0; i < robot_data_->thrusterN_; i++)
       std::cout << " " << data->c_rpm_[i];
-
+    std::cout << std::endl;
   }
 
 
