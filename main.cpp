@@ -24,7 +24,8 @@ int main() {
   bool flag_run_ = true;
 
   // set communication
-  robotData.droneIP_ = "192.168.1.122";
+  robotData.droneIP_ = "192.168.0.122";
+  //robotData.droneIP_ = "192.168.1.122";
   robotData.dronePort_ = 8090;
 
   robotData.drone_please_power_off = false;
