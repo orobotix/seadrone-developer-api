@@ -3,7 +3,6 @@
 //  Orobotix
 //
 //  Created by Eduardo Moreno on 4/9/17.
-//  Copyright © 2017 Caspar. All rights reserved.
 //
 
 #ifndef TunedParameters_h
