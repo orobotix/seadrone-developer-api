@@ -116,7 +116,7 @@ namespace orobotix {
     /** drone port */
     int dronePort_;
 
-    /** thruster number */
+    /** number of thrusters */
     int thrusterN_;
 
     /** robot configuration id. 1="inspector", 2="developer". */
@@ -139,13 +139,13 @@ namespace orobotix {
     /** goal posture [yaw, pitch, roll] : unit:degree */
     float goal_Eular_[3];
 
-    /** desired goal (unit:meter) */
+    /** desired goal depth under surface, viewed wrt to global z-axis (unit:meter) */
     double goal_depth_;
 
-    /** depth sensor (unit: meter) */
+    /** measured depth by sensor wrt global z-axis (unit: meter) */
     double depth_;
 
-    /** depth velocity (unit: m/s) */
+    /** depth velocity wrt global z-axis (unit: m/s) */
     double depth_vel_;
 
     /** gimbal pitch (unit:rad) */
