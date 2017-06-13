@@ -122,7 +122,12 @@ namespace orobotix {
     /** robot configuration id. 1="inspector", 2="developer". */
     int config_id_;
 
-    /** max speed in 6-axis [Vx; Vy; Vz; Wx; Wy; Wz] */
+    /** max speed in 6-axis [Vx; Vy; Vz; Wx; Wy; Wz], as fraction in range (0.0,1.0) 
+    see also: 
+    maxSpeed_fraction[i] = MAX_SPEED_DEFAULT_FRACTION[i] in SRobotDataUser() constructor
+    and 
+    MAX_SPEED_DEFAULT_FRACTION definition in TunedParameters.hpp for default values. 
+    */
     float maxSpeed_fraction[6];
 
     // sensor
@@ -186,34 +191,46 @@ namespace orobotix {
     /** thruster rpm commanded by the UI. (Not necessarily transmitted yet) */
     int t_rpm_[6];
 
-    /** user input - forces and moments */
+    /** user input - forces and moments 
+      c_forces_moments_[0]: goal force along x
+      c_forces_moments_[1]: goal force along y
+      c_forces_moments_[2]: unused. Use "double goal_depth_" for this axis
+      c_forces_moments_[3]: applied moment around x
+      c_forces_moments_[4]: applied moment around y
+      c_forces_moments_[5]: applied moment around z
+      */
     float c_forces_moments_[6];
 
-    /** current max thruster acceleration (rpm/s^2) */
+    /** currently used max thruster acceleration read from sensor data (rpm/s^2)*/
     int cur_max_thruster_acc_;
 
-    /** max thruster acceleration (rpm/s^2) */
+    /** desired max thruster acceleration set by command data (rpm/s^2) */
     int max_thruster_acc_;
 
-    /** desired control gain - kp */
+    /** COMMENT ON THE CONTROL GAINS DEFINED IN THE FOLLOWING:
+    PID gains are determining how well 
+    [c_forces_moments_[0-1], goal_depth_, c_forces_moments_[3-5]] 
+    are followed
+    */
+    /** desired proportional control gain - kp */
     float ctr_kp_[6];
 
-    /** desired control gain - kv */
+    /** desired derivative control gain - kv */
     float ctr_kv_[6];
 
-    /** desired control gain - ki */
+    /** desired integral control gain - ki */
     float ctr_ki_[6];
 
-    /** current control gain - kp */
+    /** currently used proportional control gain - kp */
     float cur_ctr_kp_[6];
 
-    /** current control gain - kv */
+    /** currently used derivative control gain - kv */
     float cur_ctr_kv_[6];
 
-    /** current control gain - ki */
+    /** currently used integral control gain - ki */
     float cur_ctr_ki_[6];
 
-    /** depth limit command */
+    /** depth limit command -  the max depth the robot is allowed to be commanded to */
     float depthLimit;
 
     // user command
@@ -229,16 +246,20 @@ namespace orobotix {
         * 0:disabling camera.  1:low resolution camera. 2:high resolution camera */
     int flag_enable_camera_[3];
 
-    /** flag for enabling thruster */
+    /** flag for enabling all thruster */
     bool flag_enable_thruster_;
 
-    /** flag - enable slider control */
+    /** flag - enable individual thruster control through the user 
+    by reading out commanded RPMs "int c_rpm_[6]"" (see above) */
     bool flag_enable_individual_control_;
 
-    /** flag - change control gain */
+    /** flag - change control gain. 
+    When this flag is true, the desired control gains 
+    ctr_kp_, ctr_kv_, ctr_ki_ will be read in by drone*/
     bool flag_change_control_gain_;
 
-    /** flag - reset program */
+    /** flag - reset program: restarts the program on the drone 
+    in case a soft restart is desired by the user*/
     bool flag_resetProgram_;
 
     /** true if drone should be on. Gets set false again after it's transmitted */
