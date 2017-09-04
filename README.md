@@ -1,5 +1,5 @@
 # orobotix-user-control
-Example C++ code to allow developers to control SeaDrone via UDP. 
+Example C++ code to allow developers to control SeaDrone via UDP.
 Contains udp library as well as udp comm message and robotdata structure.
 
 # File Overview:
@@ -58,3 +58,19 @@ measured rpm = 0 -1 2 -1 -1
 command rpm = 0 0 0 0 0
 ...
 ```
+
+# Accessing video stream
+The SeaDrone robot serves its camera video using the open-source mjpg-streamer utility. This is an HTTP server on port 8090 of the robot.
+
+Here are the steps to stream video:
+
+1) Connect your laptop to the tether's "SeaDrone 5.0 Ghz" wifi. Ensure the robot is on and connected.
+
+2) Command the robot to begin video streaming. There are two ways to do this:
+ - Option 1: Connect to the robot using the SeaDrone iPad app. The iPad app automatically commands the robot to begin streaming.
+ - Option 2: Use the developer API to send a command packet to enable streaming of camera 0. To do that, the part of the struct named `udp_uint8_t f_enable_camera_[3]` should be set to values ``{1,0,0}`` for 1280x720 video, or ``{2,0,0}`` for 1920x1080 video.
+
+3) To verify that it's working, open a browser, go to `http://192.168.0.122:8090/?action=snapshot` and you should see a screenshot from the camera.
+
+4) More documentation on the video streamer is here:
+ https://github.com/jacksonliam/mjpg-streamer/blob/master/mjpg-streamer-experimental/plugins/output_http/README.md (Note that SeaDrone uses port 8090, not 8080.)
