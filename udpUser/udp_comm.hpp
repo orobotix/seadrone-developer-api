@@ -73,7 +73,7 @@ namespace orobotix
 /** define the command structure */
   typedef struct
   {
-    udp_float_t packet_version; //1000.0
+    udp_float_t packet_version=1000.0;
     /** controls individual thruster rpm if f_enable_individual_control_ is true*/
     udp_int32_t c_rpm_[MAX_THRUSTER_MOTOR_NUM];
 
