@@ -16,8 +16,7 @@ namespace orobotix
 /** define the sensor information */
   typedef struct
   {
-    // Before packet_version, this position held depth.
-    // So if we see -1.0 thru 120.0 here, we're dealing with a "v0" legacy robot (one of the first 30 or so) that didn't have a packet_version.
+    // In old robot firmware, this position held depth.
     // That' why new packet version numbers are float32's starting at 1000.0, to avoid ambiguity.
     udp_float_t packet_version; //1000.0
 
@@ -63,7 +62,7 @@ namespace orobotix
     /** current thruster max acceleration (rpm/s^2) */
     udp_int32_t cur_thruster_max_acc_;
 
-    /** Magnetometer - strength (unit vector)*/
+    /** magnetometer raw magnetic field vector. To use as a compass, the chip's offset must be calibrated out.*/
     udp_float_t mag_[3];
 
     /** seconds since the robot booted */
@@ -74,11 +73,11 @@ namespace orobotix
 /** define the command structure */
   typedef struct
   {
-    udp_float_t packet_version;
-    /** thruster+motor commanded rpm */
+    udp_float_t packet_version; //1000.0
+    /** controls individual thruster rpm if f_enable_individual_control_ is true*/
     udp_int32_t c_rpm_[MAX_THRUSTER_MOTOR_NUM];
 
-    /** user forces (through joystick/GUI control) */
+    /** desired xyz force from thrusters */
     udp_float_t c_forces_moments_[3];
     
     /** goal orientation */
@@ -89,10 +88,11 @@ namespace orobotix
      * disabling camera = 0*/
     udp_uint8_t f_enable_camera_[3];
 
-    /** control thruster individually */
+    /** If true, c_rpm_ will determine thruster rpm.
+     * If false, robot determines thruster rpm to achieve the specified c_force_moments_ and goal_euler_angles_ */
     udp_uint8_t f_enable_individual_control_;
 
-    /** flag for controlling thruster */
+    /** set true to allow thrusters to move */
     udp_uint8_t f_enable_thruster_;
 
     /** flag for updating control gain */
@@ -101,10 +101,10 @@ namespace orobotix
     /** flag for reset the program */
     udp_uint8_t f_reset_program_;
 
-    /** led brightness */
+    /** brightness of top LEDs*/
     udp_uint8_t led_brightness_top_;
 
-    /** led brightness */
+    /** brightness of bottom LEDs*/
     udp_uint8_t led_brightness_bot_;
 
     /** control kp */
@@ -119,16 +119,16 @@ namespace orobotix
     /** thruster max acceleration (rpm/s^2) */
     udp_int32_t thruster_max_acc_;
 
-    /** gimbal pitch (unit:rad) */
+    /** camera gimbal pitch (unit:rad) */
     udp_float_t gimbal_Pitch_;
 
-    /** user-specified depth limit. TODO: actually use this on the Pi. */
+    /** user-specified depth limit, e.g. 10.0 will limit depth to 10 meters. */
     udp_float_t depthLimit;
 
-    /** thruster configuration. ("inspector"=1,"developer"=2). TODO: define this enumeration here and on the Pi*/
+    /** thruster configuration. ("inspector"=1,"developer"=2).*/
     udp_uint8_t robot_config;
 
-    /** 1 means the robot should turn off, 0 means stay on. The 1 will only be sent once.  TODO: use this on the Pi*/
+    /** 1 means the robot should turn off, 0 means stay on. The 1 will only be sent once.*/
     udp_uint8_t please_shutdown;
 
   }tUdpCommandData;
