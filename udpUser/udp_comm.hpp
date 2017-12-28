@@ -16,6 +16,11 @@ namespace orobotix
 /** define the sensor information */
   typedef struct
   {
+    // Before packet_version, this position held depth.
+    // So if we see -1.0 thru 120.0 here, we're dealing with a "v0" legacy robot (one of the first 30 or so) that didn't have a packet_version.
+    // That' why new packet version numbers are float32's starting at 1000.0, to avoid ambiguity.
+    udp_float_t packet_version; //1000.0
+
     /** depth sensor. unit: meter */
     udp_float_t depth_;
 
@@ -61,17 +66,23 @@ namespace orobotix
     /** Magnetometer - strength (unit vector)*/
     udp_float_t mag_[3];
 
+    /** seconds since the robot booted */
+    udp_float_t robot_uptime; //the first 10 robots Eduardo shipped send a udp packet without robot_uptime. The iOS app assumes 100.0 if it's missing.
+
   }tUdpSensorData;
 
 /** define the command structure */
   typedef struct
   {
+    udp_float_t packet_version;
     /** thruster+motor commanded rpm */
     udp_int32_t c_rpm_[MAX_THRUSTER_MOTOR_NUM];
 
-    /** user forces/moments (through joystick/GUI control) */
-    udp_float_t c_forces_moments_[6];
-
+    /** user forces (through joystick/GUI control) */
+    udp_float_t c_forces_moments_[3];
+    
+    /** goal orientation */
+    udp_float_t goal_euler_angles_[3];
     /** camera flag; [cam0; cam1; cam2]
      * enabling low camera = 1;
      * high resolution camera = 2;
