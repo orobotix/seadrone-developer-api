@@ -16,6 +16,7 @@ namespace orobotix {
     // TODO Auto-generated constructor stub
     robot_data_ = NULL;
     f_initialization_ = true;
+	commandData_.packet_version = 1000.0;
   }
 
   CUDPCommUser::~CUDPCommUser() {

@@ -18,7 +18,8 @@ namespace orobotix
   {
     // In old robot firmware, this position held depth.
     // That' why new packet version numbers are float32's starting at 1000.0, to avoid ambiguity.
-    udp_float_t packet_version; //1000.0
+    udp_float_t packet_version; //1000.0  
+	//vs2013 not support in-class member initializers, move it to Class initialization function.
 
     /** depth sensor. unit: meter */
     udp_float_t depth_;
@@ -83,7 +84,7 @@ namespace orobotix
 /** define the command structure */
   typedef struct
   {
-    udp_float_t packet_version=1000.0;
+    udp_float_t packet_version;//=1000.0;
     /** controls individual thruster rpm if f_enable_individual_control_ is true*/
     udp_int32_t c_rpm_[MAX_THRUSTER_MOTOR_NUM];
 
