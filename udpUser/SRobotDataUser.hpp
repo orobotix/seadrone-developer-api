@@ -33,7 +33,7 @@ namespace orobotix {
         goal_Eular_[i] = 0;
 
       // user input - forces and moments
-      for (int i = 0; i < 6; i++)
+      for (int i = 0; i < 3; i++)
         c_forces_moments_[i] = 0;
 
       // control gain
@@ -195,11 +195,8 @@ namespace orobotix {
       c_forces_moments_[0]: goal force along x
       c_forces_moments_[1]: goal force along y
       c_forces_moments_[2]: unused. Use "double goal_depth_" for this axis
-      c_forces_moments_[3]: applied moment around x
-      c_forces_moments_[4]: applied moment around y
-      c_forces_moments_[5]: applied moment around z
       */
-    float c_forces_moments_[6];
+    float c_forces_moments_[3];
 
     /** currently used max thruster acceleration read from sensor data (rpm/s^2)*/
     int cur_max_thruster_acc_;

@@ -286,7 +286,7 @@ namespace orobotix {
       commandData_.c_rpm_[i] = robot_data_->t_rpm_[i];
     }
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 3; i++) {
       commandData_.c_forces_moments_[i] = robot_data_->c_forces_moments_[i];
     }
 

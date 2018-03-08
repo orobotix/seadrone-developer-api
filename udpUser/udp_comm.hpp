@@ -68,6 +68,16 @@ namespace orobotix
     /** seconds since the robot booted */
     udp_float_t robot_uptime; //the first 10 robots Eduardo shipped send a udp packet without robot_uptime. The iOS app assumes 100.0 if it's missing.
 
+    udp_float_t robot_internal_pressure;//for future use. 0.0 for now.
+
+    /** each bit is 1 if the corresponding jumper is in place on the PCB. Bit 0 (the LSB) is the jumper labeled "1"
+     * For SeaDrone 1.0 PCBs, pcb_jumpers are all 0. For SeaDrone 2.0, pcb_jumpers=1. */
+    udp_uint8_t pcb_jumpers;
+
+    /** (higher bits are for future use)
+     * bit 1 is 1 if the leak sensor detects water inside the robot. SeaDrone 1.0 robots do not have a leak sensor and always report 0.
+     * bit 0 (LSB) is 1 if the IMU is still initializing. */
+    udp_uint8_t status_flags;
   }tUdpSensorData;
 
 /** define the command structure */
